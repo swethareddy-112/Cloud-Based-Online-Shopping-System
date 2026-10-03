@@ -1,0 +1,841 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CloudShop - Online Shopping</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            background: #111827;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        nav ul li a:hover {
+            color: #60a5fa;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 420px;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .hero h1 {
+            font-size: 50px;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background: #2563eb;
+            color: white;
+            padding: 13px 25px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* PRODUCTS */
+
+        .container {
+            width: 85%;
+            margin: 50px auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 35px;
+        }
+
+        .search-box input {
+            width: 400px;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 16px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-icon {
+            font-size: 70px;
+            margin-bottom: 15px;
+        }
+
+        .product h3 {
+            margin-bottom: 10px;
+        }
+
+        .price {
+            color: #16a34a;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* CART */
+
+        #cart {
+            background: #e5e7eb;
+            padding: 50px 0;
+        }
+
+        .cart-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+
+        .quantity button {
+            padding: 5px 10px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .quantity span {
+            margin: 0 10px;
+        }
+
+        .remove {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-total {
+            text-align: right;
+            margin-top: 25px;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        /* CHECKOUT */
+
+        .checkout {
+            text-align: center;
+            padding: 60px 20px;
+            display: none;
+        }
+
+        .checkout h2 {
+            color: #16a34a;
+            margin-bottom: 15px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                gap: 12px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 17px;
+            }
+
+            .search-box input {
+                width: 90%;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">
+            ☁️ CloudShop
+        </div>
+
+        <ul>
+            <li>
+                <a href="#home">Home</a>
+            </li>
+
+            <li>
+                <a href="#products">Products</a>
+            </li>
+
+            <li>
+                <a href="#cart">
+                    🛒 Cart
+                    (<span id="cartCount">0</span>)
+                </a>
+            </li>
+        </ul>
+
+    </nav>
+
+
+    <!-- HOME -->
+
+    <section class="hero" id="home">
+
+        <div>
+
+            <h1>
+                Cloud-Based Online Shopping
+            </h1>
+
+            <p>
+                Welcome to CloudShop - Your Online Shopping Platform
+            </p>
+
+            <a href="#products" class="btn">
+                Shop Now
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- PRODUCTS -->
+
+    <section class="container" id="products">
+
+        <h2 class="section-title">
+            Our Products
+        </h2>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="search"
+                placeholder="Search products..."
+                onkeyup="searchProducts()">
+
+        </div>
+
+        <div class="products" id="productList">
+
+            <!-- PRODUCT 1 -->
+
+            <div class="product" data-name="Laptop">
+
+                <div class="product-icon">
+                    💻
+                </div>
+
+                <h3>Laptop</h3>
+
+                <p class="price">
+                    ₹55,000
+                </p>
+
+                <button
+                    class="btn"
+                    onclick="addToCart('Laptop', 55000)">
+                    Add to Cart
+                </button>
+
+            </div>
+
+
+            <!-- PRODUCT 2 -->
+
+            <div class="product" data-name="Smartphone">
+
+                <div class="product-icon">
+                    📱
+                </div>
+
+                <h3>Smartphone</h3>
+
+                <p class="price">
+                    ₹25,000
+                </p>
+
+                <button
+                    class="btn"
+                    onclick="addToCart('Smartphone', 25000)">
+                    Add to Cart
+                </button>
+
+            </div>
+
+
+            <!-- PRODUCT 3 -->
+
+            <div class="product" data-name="Headphones">
+
+                <div class="product-icon">
+                    🎧
+                </div>
+
+                <h3>Headphones</h3>
+
+                <p class="price">
+                    ₹2,500
+                </p>
+
+                <button
+                    class="btn"
+                    onclick="addToCart('Headphones', 2500)">
+                    Add to Cart
+                </button>
+
+            </div>
+
+
+            <!-- PRODUCT 4 -->
+
+            <div class="product" data-name="Smart Watch">
+
+                <div class="product-icon">
+                    ⌚
+                </div>
+
+                <h3>Smart Watch</h3>
+
+                <p class="price">
+                    ₹4,000
+                </p>
+
+                <button
+                    class="btn"
+                    onclick="addToCart('Smart Watch', 4000)">
+                    Add to Cart
+                </button>
+
+            </div>
+
+
+            <!-- PRODUCT 5 -->
+
+            <div class="product" data-name="Keyboard">
+
+                <div class="product-icon">
+                    ⌨️
+                </div>
+
+                <h3>Keyboard</h3>
+
+                <p class="price">
+                    ₹1,500
+                </p>
+
+                <button
+                    class="btn"
+                    onclick="addToCart('Keyboard', 1500)">
+                    Add to Cart
+                </button>
+
+            </div>
+
+
+            <!-- PRODUCT 6 -->
+
+            <div class="product" data-name="Mouse">
+
+                <div class="product-icon">
+                    🖱️
+                </div>
+
+                <h3>Mouse</h3>
+
+                <p class="price">
+                    ₹800
+                </p>
+
+                <button
+                    class="btn"
+                    onclick="addToCart('Mouse', 800)">
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CART -->
+
+    <section id="cart">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                🛒 Shopping Cart
+            </h2>
+
+            <div class="cart-box">
+
+                <div id="cartItems">
+
+                    <p>
+                        Your cart is empty.
+                    </p>
+
+                </div>
+
+                <div class="cart-total">
+
+                    Total:
+                    ₹<span id="total">0</span>
+
+                </div>
+
+                <br>
+
+                <div style="text-align:right">
+
+                    <button
+                        class="btn"
+                        onclick="checkout()">
+
+                        Checkout
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHECKOUT -->
+
+    <section class="checkout" id="success">
+
+        <h2>
+            🎉 Order Placed Successfully!
+        </h2>
+
+        <p>
+            Thank you for shopping with CloudShop.
+        </p>
+
+        <br>
+
+        <button
+            class="btn"
+            onclick="continueShopping()">
+
+            Continue Shopping
+
+        </button>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            ☁️ CloudShop
+        </p>
+
+        <p>
+            Cloud Computing Project
+        </p>
+
+        <p>
+            © 2026 CloudShop
+        </p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        let cart = [];
+
+
+        // ADD TO CART
+
+        function addToCart(name, price) {
+
+            let existing =
+                cart.find(item => item.name === name);
+
+            if (existing) {
+
+                existing.quantity++;
+
+            } else {
+
+                cart.push({
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+
+            }
+
+            updateCart();
+
+            alert(name + " added to cart!");
+
+        }
+
+
+        // UPDATE CART
+
+        function updateCart() {
+
+            let cartItems =
+                document.getElementById("cartItems");
+
+            let total =
+                document.getElementById("total");
+
+            let cartCount =
+                document.getElementById("cartCount");
+
+            cartItems.innerHTML = "";
+
+            let totalPrice = 0;
+
+            let totalItems = 0;
+
+
+            if (cart.length === 0) {
+
+                cartItems.innerHTML =
+                    "<p>Your cart is empty.</p>";
+
+            }
+
+
+            cart.forEach((item, index) => {
+
+                totalPrice +=
+                    item.price * item.quantity;
+
+                totalItems +=
+                    item.quantity;
+
+
+                let div =
+                    document.createElement("div");
+
+                div.className = "cart-item";
+
+
+                div.innerHTML = `
+
+                    <div>
+                        <strong>
+                            ${item.name}
+                        </strong>
+                        <br>
+                        ₹${item.price}
+                    </div>
+
+                    <div class="quantity">
+
+                        <button
+                            onclick="decrease(${index})">
+                            -
+                        </button>
+
+                        <span>
+                            ${item.quantity}
+                        </span>
+
+                        <button
+                            onclick="increase(${index})">
+                            +
+                        </button>
+
+                    </div>
+
+                    <div>
+                        ₹${item.price * item.quantity}
+                    </div>
+
+                    <button
+                        class="remove"
+                        onclick="removeItem(${index})">
+
+                        Remove
+
+                    </button>
+
+                `;
+
+                cartItems.appendChild(div);
+
+            });
+
+
+            total.innerText =
+                totalPrice.toLocaleString("en-IN");
+
+            cartCount.innerText =
+                totalItems;
+
+        }
+
+
+        // INCREASE
+
+        function increase(index) {
+
+            cart[index].quantity++;
+
+            updateCart();
+
+        }
+
+
+        // DECREASE
+
+        function decrease(index) {
+
+            if (cart[index].quantity > 1) {
+
+                cart[index].quantity--;
+
+            } else {
+
+                cart.splice(index, 1);
+
+            }
+
+            updateCart();
+
+        }
+
+
+        // REMOVE
+
+        function removeItem(index) {
+
+            cart.splice(index, 1);
+
+            updateCart();
+
+        }
+
+
+        // SEARCH
+
+        function searchProducts() {
+
+            let input =
+                document.getElementById("search")
+                .value
+                .toLowerCase();
+
+            let products =
+                document.querySelectorAll(".product");
+
+
+            products.forEach(product => {
+
+                let name =
+                    product
+                    .getAttribute("data-name")
+                    .toLowerCase();
+
+
+                if (name.includes(input)) {
+
+                    product.style.display = "block";
+
+                } else {
+
+                    product.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+
+        // CHECKOUT
+
+        function checkout() {
+
+            if (cart.length === 0) {
+
+                alert(
+                    "Your cart is empty!"
+                );
+
+                return;
+
+            }
+
+
+            document.getElementById("success")
+                .style.display = "block";
+
+
+            window.scrollTo({
+                top:
+                    document.getElementById("success")
+                    .offsetTop,
+                behavior: "smooth"
+            });
+
+
+            cart = [];
+
+            updateCart();
+
+        }
+
+
+        // CONTINUE SHOPPING
+
+        function continueShopping() {
+
+            document.getElementById("success")
+                .style.display = "none";
+
+
+            window.location.href =
+                "#products";
+
+        }
+
+
+        // INITIAL CART
+
+        updateCart();
+
+    </script>
+
+</body>
+
+</html>
+```
